@@ -20,7 +20,7 @@ class BingParser {
     }
 
     fetch() {
-        return axios.get(this.dataURL).then(res => {
+        return axios.get(this.dataURL, { headers: { 'accept-language': 'en-US' } }).then(res => {
             return res.data;
         }).then(coronaData => {
             return {
