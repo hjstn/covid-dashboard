@@ -42,11 +42,13 @@ class Archiver {
         
                 dbArea.lastUpdated = area.lastUpdated;
         
-                if (dbArea.displayName !== area.displayName) {
-                    console.log(`Updating area display name from ${dbArea.displayName} to ${area.displayName}`);
-                    dbArea.displayName = area.displayName;
-                    changes = true;
-                }
+                ['displayName', 'lat', 'long', 'parentId'].forEach(key => {
+                    if (dbArea[key] !== area[key]) {
+                        console.log(`Updating area ${key} from ${dbArea[key]} to ${area[key]}`);
+                        dbArea[key] = area[key];
+                        changes = true;
+                    }
+                });
         
                 let areaChanges = true;
                 area.areas.forEach(subArea => {
