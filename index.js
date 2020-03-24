@@ -47,6 +47,7 @@ function getBreadcrumbs(areaId, initial = true) {
 }
 
 app.get('/data/:area', (req, res) => {
+    if (!req.params.area) return res.sendStatus(404);
     const area = storage.hasArea(req.params.area);
 
     if (!area) return res.sendStatus(404);
