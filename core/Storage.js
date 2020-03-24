@@ -29,6 +29,10 @@ class Storage {
         }).write();
     }
 
+    hasArea(areaID) {
+        return this.areasDB.getById(areaID).value();
+    }
+
     getArea(areaID) {
         const areaInDB = this.areasDB.getById(areaID).value();
 

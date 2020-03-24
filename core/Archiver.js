@@ -1,7 +1,8 @@
 class Archiver {
-    constructor(bingParser, storage) {
+    constructor(bingParser, storage, updateHandler) {
         this.bingParser = bingParser;
         this.storage = storage;
+        this.updateHandler = updateHandler;
     }
 
     static findParentLastUpdated(areas, id) {
@@ -79,6 +80,8 @@ class Archiver {
                             totalDeaths: area.totalDeaths,
                             totalRecovered: area.totalRecovered
                         });
+
+                        this.updateHandler(area.id, area);
                     }
                 }
 
