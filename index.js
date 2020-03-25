@@ -58,7 +58,7 @@ app.get('/data/:area', (req, res) => {
     if (!area) return res.sendStatus(404);
 
     res.send({
-        breadcrumbs: area.parentId ? [...getParents(area.parentId), { id: area.id, displayName: area.displayName }] : [],
+        breadcrumbs: (area.parentId ? getParents(area.parentId) : []).concat([ { id: area.id, displayName: area.displayName }]),
         subAreas: getSubAreas(area),
         area
     });
