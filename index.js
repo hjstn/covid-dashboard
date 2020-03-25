@@ -28,22 +28,26 @@ const archiver = new Archiver(bingParser, storage, (areaID, record) => {
 setInterval(() => archiver.run(), 60 * 60 * 1000);
 archiver.run();
 
-function getBreadcrumbs(areaId, initial = true) {
+function getParents(areaId) {
     const area = storage.getArea(areaId);
     const bcPath = [ { id: areaId, displayName: area.displayName } ];
 
     if (area && area.parentId) {
-        bcPath.unshift(...getBreadcrumbs(area.parentId, false));
+        bcPath.unshift(...getParents(area.parentId));
     }
 
-    if (initial) {
+    return bcPath;
+}
+
+function getSubAreas(area) {
+    return area.areas.map(subAreaId => {
+        const subArea = storage.getArea(subAreaId);
+
         return {
-            path: bcPath,
-            siblings: area.areas.map(subAreaId => storage.getArea(subAreaId)).map(subArea => ({ id: subArea.id, displayName: subArea.displayName}))
+            id: subArea.id,
+            displayName: subArea.displayName
         };
-    } else {
-        return bcPath;
-    }
+    });
 }
 
 app.get('/data/:area', (req, res) => {
@@ -54,7 +58,8 @@ app.get('/data/:area', (req, res) => {
     if (!area) return res.sendStatus(404);
 
     res.send({
-        breadcrumbs: area.parentId ? getBreadcrumbs(area.parentId) : { path: [], siblings: [] },
+        breadcrumbs: area.parentId ? [getParents(area.parentId), { id: area.id, displayName: area.displayName }] : [],
+        subAreas: getSubAreas(area),
         area
     });
 });
