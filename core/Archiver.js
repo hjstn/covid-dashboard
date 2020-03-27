@@ -72,17 +72,20 @@ class Archiver {
 
                         return true;
                     });
+                } else {
+                    valChanges = true;
+                    changes = true;
+                }
 
-                    if (valChanges) {
-                        dbArea.records.push({
-                            time: area.lastUpdated,
-                            totalConfirmed: area.totalConfirmed,
-                            totalDeaths: area.totalDeaths,
-                            totalRecovered: area.totalRecovered
-                        });
+                if (valChanges) {
+                    dbArea.records.push({
+                        time: area.lastUpdated,
+                        totalConfirmed: area.totalConfirmed,
+                        totalDeaths: area.totalDeaths,
+                        totalRecovered: area.totalRecovered
+                    });
 
-                        this.updateHandler(area.id, area);
-                    }
+                    this.updateHandler(area.id, area);
                 }
 
                 if (changes) this.storage.updateArea(area.id, dbArea);
