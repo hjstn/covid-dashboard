@@ -59,10 +59,11 @@ class Archiver {
                     }
                 });
         
+                let valChanges = false;
+
                 if (dbArea.records.length > 0) {
                     const latestRecord = dbArea.records[dbArea.records.length - 1];
 
-                    let valChanges = false;
                     ['totalConfirmed', 'totalDeaths', 'totalRecovered'].every(key => {
                         if (latestRecord[key] !== area[key]) {
                             valChanges = true;
